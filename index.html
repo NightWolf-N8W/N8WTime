@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N8W - Digital Clock With Date</title>
+    <span class="s">Digital Clock With Date</h1>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="stylesheet" href="index.css">
+</head>
+<body onload="initClock()">
+    
+    <div class="datetime">
+        <i class="uil uil-ellipsis-v dot-menu-btn"id="active-menu"></i>
+        <ul class="dot-menu"id="active-menu">
+            <li class="menu-item"></li>
+                <span class="clock-format-text" id="active-menu">24-Hrs format</span>
+                <div class="format-switch-btn" id="active-menu" data-format="12"></div>
+        </li>
+        </ul>
+        <div class="time">
+            <span id="hour">00</span>:
+            <span id="minute">00</span>:
+            <span id="second">00</span>
+            <span id="dayornight">AM</span>
+        </div>
+        <div class="date">
+            <span id="dayname">Day</span>,
+            <span id="monthname">Month</span>
+            <span id="daynum">00</span>,
+            <span id="year">Year</span>
+            
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+    const formatSwitchBtn = document.querySelector(".format-switch-btn");
+
+    formatSwitchBtn.addEventListener("click",()=>{
+        formatSwitchBtn.classList.toggle("active");
+
+        var formatValue = formatSwitchBtn.getAttribute("data-format");
+
+        if(formatValue === "12"){
+            formatSwitchBtn.setAttribute("data-format","24")
+        }
+        else{
+            formatSwitchBtn.setAttribute("data-format","12")
+        }
+    });
+
+    function updateClock() {
+        
+        var now = new Date();
+        var dname = now.getDay(),
+            mo = now.getMonth(),
+            dnum = now.getDate(),
+            yr = now.getFullYear(),
+            hou = now.getHours(),
+            min = now.getMinutes(),
+        
+            sec = now.getSeconds(),
+            pe = "AM";
+            
+            var formatValue = formatSwitchBtn.getAttribute("data-format");
+            if(formatValue==="12"){
+                if(hou>12){
+                    hou=hou-12
+                    pe="PM";
+                }
+                if(hou==0){
+                    hou=12
+                }
+            }
+            if(formatValue==="24"){
+                pe="";
+            }
+            Number.prototype.pad=function(digits){
+                for(var n =this.toString(); n.length < digits; n=0 +n);
+                return n
+            }
+            var months = ["January", "February", "March", "April", "May", "June","July","August", "September", "October", "November", "December"]
+            var week = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+            var ids = ["dayname","monthname","daynum","year","hour", "minute","second", "dayornight"]
+            var values = [week[dname], months[mo], dnum, yr, hou.pad(2), min.pad(2),sec.pad(2) , pe];
+            for(var i=0; i<ids.length; i++) 
+            document.getElementById(ids[i]).firstChild.nodeValue = values[i];
+    }
+    function initClock() {
+        updateClock();
+        window.setInterval("updateClock()",1)
+    }
+    const dotmenuBtn = document.querySelector(".dot-menu-btn");
+    const dotMenu = document.querySelector(".dot-menu");
+
+    dotmenuBtn.addEventListener("click",()=>{
+        dotMenu.classList.toggle("active");
+    });
+    document.addEventListener("click",(e)=>{
+        if(e.target.id !=="active-menu"){
+            dotMenu.classList.remove("active")
+        }
+    })
+    </script>
+
+</body>
+</html>
