@@ -229,8 +229,7 @@ body{
     transform: translateX(-10px);
     transform: 0.3 ease;
     transition-property: background,transform;
-
-  }
+}
   .format-switch-btn.active:before {
     background:#ffffff;
     box-shadow:0 5px 25px #ffffff;
